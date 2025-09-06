@@ -84,23 +84,19 @@
       return await CosmosAsync.del(requestURL);
     };
 
-    const updatePlaylist = async (playlistId, tracks) => {
+    const updatePlaylist = async (playlistId, trackUris) => {
       try {
         const chunkSize = 100;
-        const totalChunks = Math.ceil(tracks.length / chunkSize);
 
         // Replace the first chunk
-        const firstChunk = tracks.slice(0, chunkSize);
+        const firstChunk = trackUris.splice(0, chunkSize);
         await replacePlaylistTracks(playlistId, firstChunk);
 
         // If there are additional chunks, add them to the playlist
-        for (let i = 1; i < totalChunks; i++) {
+        while (trackUris.length > 0) {
           // Add rate-limiting delay
           await new Promise((resolve) => setTimeout(resolve, API_DELAY));
-
-          const start = i * chunkSize;
-          const end = (i + 1) * chunkSize;
-          const additionalChunk = tracks.slice(start, end);
+          const additionalChunk = tracks.splice(0, chunkSize);
           await addTracksToPlaylist(playlistId, additionalChunk);
         }
       } catch (error) {
@@ -124,10 +120,10 @@
       }
     };
 
-    const addTracksToPlaylist = async (playlistId, tracks) => {
+    const addTracksToPlaylist = async (playlistId, trackURIs) => {
       const requestURL = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
       const requestBody = JSON.stringify({
-        uris: tracks.map((track) => track.track.uri),
+        uris: trackURIs.map((URI) => `spotify:track:${URI}`),
       });
       const response = await CosmosAsync.post(requestURL, requestBody);
 
@@ -179,13 +175,14 @@
       return newPlaylistID;
     }
 
-    const updatePlaylistTracks = async (playlistId, trackURIs) => {
+    const updatePlaylistTracks = async (playlistId, trackURIs = []) => {
       const requestURL = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
 
       const batchSize = 100;
 
-      for (let i = 0; i < trackURIs.length; i += batchSize) {
-        const batch = trackURIs.slice(i, i + batchSize);
+      while (trackURIs.length > 0) {
+        const batch = trackURIs.splice(0, batchSize);
+
         const requestBody = {
           uris: batch.map((uri) => `spotify:track:${uri}`),
         };
@@ -241,10 +238,10 @@
       );
 
       // Shuffle the tracks
-      const shuffledTracks = fisherYatesShuffle(originalTrackURIs);
+      const shuffledTrackUris = fisherYatesShuffle(originalTrackURIs);
 
       // Update the original playlist with the shuffled tracks
-      await updatePlaylist(playlistID, shuffledTracks);
+      await updatePlaylist(playlistID, shuffledTrackUris);
 
       Spicetify.showNotification(
         "Playlist shuffled successfully! May need to refresh/reload your playlist."
