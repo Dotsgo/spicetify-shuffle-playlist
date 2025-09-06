@@ -161,7 +161,7 @@
     console.log("Playlist ID:", playlistID);
 
     Spicetify.showNotification(
-      "Shuffling to new playlist (may take a minute)..."
+      "Shuffling (may take a minute - notification on finish)..."
     );
 
     await new Promise((resolve) => setTimeout(resolve, API_DELAY));
