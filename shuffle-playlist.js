@@ -73,8 +73,14 @@
     const addTracksToPlaylist = async (playlistId, trackURIs = []) => {
       const requestURL = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
       const batchSize = 100;
+      if (trackURIs.length >= 1000) {
+        API_DELAY *= 2;
+      }
 
+      console.log("Adding tracks to playlist...");
       while (trackURIs.length > 0) {
+        await new Promise((resolve) => setTimeout(resolve, API_DELAY));
+
         const batch = trackURIs.splice(0, batchSize);
 
         const requestBody = JSON.stringify({
@@ -85,7 +91,7 @@
         if (!response.snapshot_id) {
           console.error("Error adding tracks to playlist");
           throw new Error(`Failed to add tracks to playlist.`);
-        }
+        } else console.log("Added a batch...");
       }
     };
 
