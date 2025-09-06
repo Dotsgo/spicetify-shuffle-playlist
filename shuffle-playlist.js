@@ -3,7 +3,7 @@
  *
  * MIT License
  *
- * Copyright (c) 2024 Gomeschian
+ * Copyright (c) 2025 Dotsgo
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -178,9 +178,6 @@
       Spicetify.showNotification(
         "Playlist shuffled successfully! May need to refresh/reload your playlist."
       );
-
-      // Optionally delete the backup playlist automatically
-      // await unFollowBackupPlaylist(backupPlaylistID);
     } catch (error) {
       console.error("Error shuffling playlist:", error);
       Spicetify.showNotification(
