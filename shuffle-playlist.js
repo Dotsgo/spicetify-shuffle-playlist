@@ -37,7 +37,7 @@
 
   const API_DELAY = 1000; // Artificial delay in milliseconds between API calls
 
-  const buttontxt = "Shuffle Playlist";
+  const buttontxt = "Make Shuffled Copy";
 
   async function createShuffledPlaylist(uris) {
     // Definitions
