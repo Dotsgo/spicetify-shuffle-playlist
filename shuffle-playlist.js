@@ -58,8 +58,7 @@
         const originalPlaylistName = await getPlaylistName(originalPlaylistID);
 
         // Create a new playlist name
-        const now = new Date();
-        const newPlaylistName = `${originalPlaylistName} (shuffled ${now.toLocaleString()})`;
+        const newPlaylistName = `${originalPlaylistName} (shuffled)`;
 
         // Create a new empty playlist
         const newPlaylistID = await createEmptyPlaylist(newPlaylistName);
