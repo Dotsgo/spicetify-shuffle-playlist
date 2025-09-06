@@ -153,7 +153,7 @@
     console.log("Playlist ID:", playlistID);
 
     Spicetify.showNotification(
-      "Backing up and shuffling playlist (may take a minute)..."
+      "Shuffling to new playlist (may take a minute)..."
     );
 
     await new Promise((resolve) => setTimeout(resolve, API_DELAY));
