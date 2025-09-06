@@ -35,7 +35,7 @@
     return;
   }
 
-  const API_DELAY = 1000; // Artificial delay in milliseconds between API calls
+  const API_DELAY = 100; // Artificial delay in milliseconds between API calls
 
   const buttontxt = "Make Shuffled Copy";
 
