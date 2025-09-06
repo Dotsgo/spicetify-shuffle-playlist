@@ -73,13 +73,15 @@
     const addTracksToPlaylist = async (playlistId, trackURIs = []) => {
       const requestURL = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`;
       const batchSize = 100;
+      let adjustedAPIDelay = API_DELAY;
+
       if (trackURIs.length >= 1000) {
-        API_DELAY *= 2;
+        adjustedAPIDelay = API_DELAY * 2;
       }
 
       console.log("Adding tracks to playlist...");
       while (trackURIs.length > 0) {
-        await new Promise((resolve) => setTimeout(resolve, API_DELAY));
+        await new Promise((resolve) => setTimeout(resolve, adjustedAPIDelay));
 
         const batch = trackURIs.splice(0, batchSize);
 
