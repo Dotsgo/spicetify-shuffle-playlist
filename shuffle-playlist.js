@@ -53,6 +53,10 @@
     };
 
     const createNewPlaylist = async (originalPlaylistID, originalTrackURIs) => {
+      if (originalTrackURIs.length < 1) {
+        Spicetify.showNotification("No tracks to shuffle");
+        return;
+      }
       try {
         // Get the name of the original playlist
         const originalPlaylistName = await getPlaylistName(originalPlaylistID);
@@ -65,7 +69,7 @@
 
         return newPlaylistID;
       } catch (error) {
-        console.error("Error creating backup playlist:", error);
+        console.error("Error creating new playlist:", error);
         throw error;
       }
     };
